@@ -43,5 +43,6 @@ lerna-debug.log*
 .prettierrc
 .env.example
 README.md
+# Potentially sensitive
 *.key
 /root/.docker
