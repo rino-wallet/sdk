@@ -1,6 +1,8 @@
 # sdk
 SDK for Enterprise RINO users
 
+**Note: the SDK is currently in BETA**
+
 This repo contains the source code for our pre-built Images at https://hub.docker.com/r/rinowallet/sdk or build your own image from the `Dockerfile`.
 
 * Git Tags correspond to pre-built image tags at https://hub.docker.com/r/rinowallet/sdk
