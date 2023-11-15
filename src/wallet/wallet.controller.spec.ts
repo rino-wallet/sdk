@@ -115,6 +115,12 @@ describe("WalletController", () => {
     expect(walletService.getSubaddresses).toHaveBeenCalled();
   });
 
+  it("gets a single subaddress in the configured wallet", async () => {
+    await controller.getSubaddress(ADDRESS);
+
+    expect(walletService.getSubaddress).toHaveBeenCalledWith(ADDRESS);
+  });
+
   it("creates a subaddress in the configured wallet", () => {
     return new Promise<void>((resolve) => {
       setTimeout(async () => {

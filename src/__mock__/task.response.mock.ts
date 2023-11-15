@@ -1,7 +1,7 @@
 import {
   TaskResponseCreateTxResult,
   TaskResponseEntity,
-  TaskResponseSubmitTxResult,
+  WalletTransactionSubmitResultResponse,
 } from "../entities";
 
 export const taskResponseMock: TaskResponseEntity = {
@@ -26,9 +26,10 @@ export const taskResponseCreateTxResultMock: TaskResponseCreateTxResult = {
   multisig_hex: "string",
 };
 
-export const taskResponseSubmitTxResultMock: TaskResponseSubmitTxResult = {
+export const submitResultMock: WalletTransactionSubmitResultResponse = {
   created_at: "string",
   updated_at: "string",
+  wallet_id: "string",
   txid: "string",
   amount: "string",
   timestamp: "string",
@@ -42,5 +43,17 @@ export const taskResponseSubmitTxResultMock: TaskResponseSubmitTxResult = {
   ip_addr: "string",
   euro_amount: "string",
   destinations: [],
-  wallet: "wallet",
+  wallet: {
+    created_at: "string",
+    updated_at: "string",
+    id: "string",
+    balance: "string",
+    unlocked_balance: "string",
+    creation_height: 0,
+    height: "string",
+    last_interaction_at: "string",
+    last_sync_at: "string",
+    address: "string",
+    status: "string",
+  },
 };

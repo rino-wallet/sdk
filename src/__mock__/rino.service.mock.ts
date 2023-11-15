@@ -38,26 +38,29 @@ export const rinoServiceMock = createMock<RinoService>({
   getWalletPendingTransfers: jest.fn(() => of(walletPendingTransfersMock)),
   getWalletPendingTransfer: jest.fn(() =>
     of(
-      walletPendingTransfersMock.find(
+      walletPendingTransfersMock.results.find(
         (item) => item.id === PENDING_TRANSFER_ID,
       ),
     ),
   ),
   getWalletSubaddresses: jest.fn(() => of(walletSubaddressesMock)),
-  createWalletSubaddress: jest.fn(() => of(walletSubaddressesMock[0])),
+  getWalletSubaddress: jest.fn(() => of(walletSubaddressesMock.results[0])),
+  createWalletSubaddress: jest.fn(() => of(walletSubaddressesMock.results[0])),
   updateWalletSubaddress: jest.fn(() =>
-    of(walletSubaddressesMock.find((item) => item.address === ADDRESS)),
+    of(walletSubaddressesMock.results.find((item) => item.address === ADDRESS)),
   ),
   partialUpdateWalletSubaddress: jest.fn(() =>
-    of(walletSubaddressesMock.find((item) => item.address === ADDRESS)),
+    of(walletSubaddressesMock.results.find((item) => item.address === ADDRESS)),
   ),
   getWalletTransactions: jest.fn(() => of(walletTransactionsMock)),
   getWalletTransaction: jest.fn(() =>
-    of(walletTransactionsMock.find((item) => item.id === TRANSACTION_ID)),
+    of(
+      walletTransactionsMock.results.find((item) => item.id === TRANSACTION_ID),
+    ),
   ),
   createWalletUnsignedTransaction: jest.fn(() => of("task_id")),
   submitWalletTransaction: jest.fn(() => of("task_id")),
-  signWalletSubaddress: jest.fn(() => of(walletSubaddressesMock[0])),
+  signWalletSubaddress: jest.fn(() => of(walletSubaddressesMock.results[0])),
   exportTransactions: jest.fn((type) => {
     let file;
 

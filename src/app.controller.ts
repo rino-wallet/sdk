@@ -21,7 +21,7 @@ export class AppController {
   @ApiOperation({ summary: "Checks the service health" })
   @ApiResponse({
     status: 200,
-    description: "The service status",
+    description: "The Ok service status",
     type: StatusEntity,
   })
   getHealth(): Observable<StatusEntity> {

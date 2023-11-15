@@ -63,11 +63,17 @@ const createHttpString = (
 ) => {
   let query = "";
   if (config && config.params) {
-    query =
-      "?" +
-      Object.entries(config.params)
-        .map((entry) => entry.join("="))
-        .join("&");
+    const entries = Object.entries(config.params).filter(
+      ([_, value]) => !!value,
+    );
+
+    if (entries && entries.length > 0) {
+      query =
+        "?" +
+        Object.entries(config.params)
+          .map((entry) => entry.join("="))
+          .join("&");
+    }
   }
   return `${method} ${url}${query}`;
 };

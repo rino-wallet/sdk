@@ -128,6 +128,12 @@ describe("WalletService", () => {
     expect(rinoService.getWalletSubaddresses).toHaveBeenCalled();
   });
 
+  it("get single subaddress in the configured wallet", async () => {
+    await service.getSubaddress(ADDRESS);
+
+    expect(rinoService.getWalletSubaddress).toHaveBeenCalledWith(ADDRESS);
+  });
+
   it("creates a subaddress in the configured wallet", () => {
     return new Promise<void>((resolve) => {
       setTimeout(async () => {

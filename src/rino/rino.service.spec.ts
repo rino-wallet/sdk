@@ -101,7 +101,12 @@ describe("RinoService", () => {
 
     expect(httpService.get).toHaveBeenCalledWith(
       `/wallets/${WALLET_ID}/activity`,
-      undefined,
+      {
+        params: {
+          limit: undefined,
+          offset: undefined,
+        },
+      },
     );
 
     expect(result).toStrictEqual(walletActivitiesMock);
@@ -112,7 +117,12 @@ describe("RinoService", () => {
 
     expect(httpService.get).toHaveBeenCalledWith(
       `/wallets/${WALLET_ID}/members`,
-      undefined,
+      {
+        params: {
+          limit: undefined,
+          offset: undefined,
+        },
+      },
     );
 
     expect(result).toStrictEqual(walletMembersMock);
@@ -123,7 +133,12 @@ describe("RinoService", () => {
 
     expect(httpService.get).toHaveBeenCalledWith(
       `/wallets/${WALLET_ID}/removed_spenders`,
-      undefined,
+      {
+        params: {
+          limit: undefined,
+          offset: undefined,
+        },
+      },
     );
 
     expect(result).toStrictEqual(walletRemovedSpendersMock);
@@ -134,14 +149,19 @@ describe("RinoService", () => {
 
     expect(httpService.get).toHaveBeenCalledWith(
       `/wallets/${WALLET_ID}/pending_transfers`,
-      undefined,
+      {
+        params: {
+          limit: undefined,
+          offset: undefined,
+        },
+      },
     );
 
     expect(result).toStrictEqual(walletPendingTransfersMock);
   });
 
   it("gets a pending transfer in the configured wallet", async () => {
-    const pendingTransfer = walletPendingTransfersMock.find(
+    const pendingTransfer = walletPendingTransfersMock.results.find(
       (item) => item.id === PENDING_TRANSFER_ID,
     );
     const result = await lastValueFrom(
@@ -191,10 +211,24 @@ describe("RinoService", () => {
 
     expect(httpService.get).toHaveBeenCalledWith(
       `/wallets/${WALLET_ID}/subaddresses`,
-      undefined,
+      {
+        params: {
+          limit: undefined,
+          offset: undefined,
+        },
+      },
     );
 
     expect(result).toStrictEqual(walletSubaddressesMock);
+  });
+
+  it("gets a single wallet subaddress", async () => {
+    await lastValueFrom(service.getWalletSubaddress(ADDRESS));
+
+    expect(httpService.get).toHaveBeenCalledWith(
+      `/wallets/${WALLET_ID}/subaddresses/${ADDRESS}`,
+      undefined,
+    );
   });
 
   it("creates a subaddress in the configured wallet", async () => {
@@ -246,14 +280,19 @@ describe("RinoService", () => {
 
     expect(httpService.get).toHaveBeenCalledWith(
       `/wallets/${WALLET_ID}/transactions`,
-      undefined,
+      {
+        params: {
+          limit: undefined,
+          offset: undefined,
+        },
+      },
     );
 
     expect(result).toStrictEqual(walletTransactionsMock);
   });
 
   it("gets a transaction in the configured wallet", async () => {
-    const transaction = walletTransactionsMock.find(
+    const transaction = walletTransactionsMock.results.find(
       (item) => item.id === TRANSACTION_ID,
     );
     const result = await lastValueFrom(

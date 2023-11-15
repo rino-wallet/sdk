@@ -22,7 +22,7 @@ export class WalletTransactionEntity {
   @ApiProperty()
   confirmations: number;
 
-  @ApiProperty()
+  @ApiProperty({ isArray: true, type: WalletTransactionDestinationEntity })
   destinations: WalletTransactionDestinationEntity[];
 
   @ApiProperty()

@@ -9,7 +9,7 @@ export * from "./task.response.createtx.params";
 export * from "./task.response.createtx.result";
 export * from "./task.response.entity";
 export * from "./task.response.submittx.params";
-export * from "./task.response.submittx.result";
+export * from "./wallet.transaction.submit.result.response";
 export * from "./wallet.entity";
 export * from "./wallet.activity.entity";
 export * from "./wallet.member.entity";

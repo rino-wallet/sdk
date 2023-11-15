@@ -10,7 +10,6 @@ import {
   AccountInfoEntity,
   FileResponseEntity,
   TaskResponseEntity,
-  TaskResponseSubmitTxResult,
   TaskResponseSubmitTxParams,
   WalletActivityEntity,
   WalletEntity,
@@ -30,8 +29,10 @@ import {
   WalletTransactionCreateResponse,
   WalletTransactionSubmitResponse,
   WalletTransactionSupportedExportTypes,
+  WalletTransactionSubmitResultResponse,
 } from "../entities";
 import { MoneroWallet } from "../monero/Wallet";
+import { Page } from "../types";
 import {
   decryptKeys,
   deriveUserKeys,
@@ -85,20 +86,32 @@ export class WalletService {
     return this.rinoService.getWallet();
   }
 
-  getActivity(): Observable<WalletActivityEntity[]> {
-    return this.rinoService.getWalletActivity();
+  getActivity(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletActivityEntity>> {
+    return this.rinoService.getWalletActivity(limit, offset);
   }
 
-  getMembers(): Observable<WalletMemberEntity[]> {
-    return this.rinoService.getWalletMembers();
+  getMembers(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletMemberEntity>> {
+    return this.rinoService.getWalletMembers(limit, offset);
   }
 
-  getRemovedSpenders(): Observable<WalletRemovedSpenderEntity[]> {
-    return this.rinoService.getWalletRemovedSpenders();
+  getRemovedSpenders(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletRemovedSpenderEntity>> {
+    return this.rinoService.getWalletRemovedSpenders(limit, offset);
   }
 
-  getPendingTransfers(): Observable<WalletPendingTransferEntity[]> {
-    return this.rinoService.getWalletPendingTransfers();
+  getPendingTransfers(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletPendingTransferEntity>> {
+    return this.rinoService.getWalletPendingTransfers(limit, offset);
   }
 
   getPendingTransfer(
@@ -136,10 +149,15 @@ export class WalletService {
     return this.rinoService.rejectWalletPendingTransfer(pendingTransferId);
   }
 
-  async getSubaddresses() {
-    const subaddresses = await lastValueFrom(
-      this.rinoService.getWalletSubaddresses(),
+  async getSubaddresses(
+    limit?: number,
+    offset?: number,
+  ): Promise<Page<WalletSubaddressEntity>> {
+    const page = await lastValueFrom(
+      this.rinoService.getWalletSubaddresses(limit, offset),
     );
+
+    const { results: subaddresses } = page;
 
     const {
       username,
@@ -180,7 +198,49 @@ export class WalletService {
 
     cleanDerivedKeys();
 
-    return processedSubaddresses;
+    return {
+      ...page,
+      results: processedSubaddresses,
+    };
+  }
+
+  async getSubaddress(address: string) {
+    const subaddress = await lastValueFrom(
+      this.rinoService.getWalletSubaddress(address),
+    );
+
+    const {
+      username,
+      keypair: { enc_private_key },
+    } = this.accountInfo;
+
+    const encPrivateKey = JSON.parse(enc_private_key);
+
+    const { encryptionKey, clean: cleanDerivedKeys } = await deriveUserKeys(
+      this.password,
+      username,
+    );
+
+    let validated = false;
+    try {
+      if (!!subaddress.signature) {
+        validated = await verifySignature(
+          encPrivateKey,
+          encryptionKey,
+          subaddress.address,
+          Uint8Array.from(Buffer.from(subaddress.signature, "base64")),
+        );
+      }
+    } catch (error) {
+      this.logger.error(`Error verifying signature of address ${subaddress}`);
+      this.logger.error(error);
+    }
+
+    subaddress.validated = validated;
+
+    cleanDerivedKeys();
+
+    return subaddress;
   }
 
   async createSubaddress(): Promise<WalletSubaddressEntity> {
@@ -240,8 +300,11 @@ export class WalletService {
     return this.rinoService.partialUpdateWalletSubaddress(address, payload);
   }
 
-  getTransactions(): Observable<WalletTransactionEntity[]> {
-    return this.rinoService.getWalletTransactions();
+  getTransactions(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletTransactionEntity>> {
+    return this.rinoService.getWalletTransactions(limit, offset);
   }
 
   getTransaction(transactionId: string): Observable<WalletTransactionEntity> {
@@ -294,18 +357,18 @@ export class WalletService {
 
       if (typeof submitTxResponse === "string") {
         const submitTxTaskResult = await this.pollTask<
-          TaskResponseSubmitTxResult,
+          TaskResponseEntity<WalletTransactionSubmitResultResponse[]>,
           TaskResponseSubmitTxParams
         >(submitTxResponse);
 
         response = {
           requiresApproval: false,
-          data: submitTxTaskResult,
+          result: submitTxTaskResult.result[0],
         };
       } else {
         response = {
           requiresApproval: true,
-          data: submitTxResponse,
+          result: submitTxResponse,
         };
       }
 
@@ -393,18 +456,18 @@ export class WalletService {
 
       if (typeof submitTxResponse === "string") {
         const submitTxTaskResult = await this.pollTask<
-          TaskResponseSubmitTxResult,
+          TaskResponseEntity<WalletTransactionSubmitResultResponse[]>,
           TaskResponseSubmitTxParams
         >(submitTxResponse);
 
         response = {
           requiresApproval: false,
-          data: submitTxTaskResult,
+          result: submitTxTaskResult.result[0],
         };
       } else {
         response = {
           requiresApproval: true,
-          data: submitTxResponse,
+          result: submitTxResponse,
         };
       }
 

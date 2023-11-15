@@ -1,5 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+class WalletPendingTransferApproval {
+  @ApiProperty()
+  user: string;
+
+  @ApiProperty()
+  created_at: string;
+}
+
 export class WalletPendingTransferEntity {
   @ApiProperty()
   id: string;
@@ -28,11 +36,8 @@ export class WalletPendingTransferEntity {
   @ApiProperty()
   signed_multisig_tx: string;
 
-  @ApiProperty()
-  approvals: Array<{
-    user: string;
-    created_at: string;
-  }>;
+  @ApiProperty({ isArray: true, type: WalletPendingTransferApproval })
+  approvals: WalletPendingTransferApproval[];
 
   @ApiProperty()
   created_at: string;

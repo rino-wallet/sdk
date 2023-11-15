@@ -23,10 +23,9 @@ import {
   WalletTransactionSupportedExportTypes,
   FileResponseEntity,
 } from "../entities";
+import { Page } from "../types";
 
 const responseDataMapCallback = (response) => response.data;
-
-const responseResultsMapCallback = (response) => response.data.results;
 
 const responseTaskIdMapCallback = (response) => response.data.task_id;
 
@@ -63,35 +62,67 @@ export class RinoService {
     return this.get<WalletEntity>(`/wallets/${this.walletId}`);
   }
 
-  getWalletActivity(): Observable<WalletActivityEntity[]> {
-    return this.get<WalletActivityEntity[]>(
+  getWalletActivity(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletActivityEntity>> {
+    return this.get<Page<WalletActivityEntity>>(
       `/wallets/${this.walletId}/activity`,
-      undefined,
-      responseResultsMapCallback,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      },
+      responseDataMapCallback,
     );
   }
 
-  getWalletMembers(): Observable<WalletMemberEntity[]> {
-    return this.get<WalletMemberEntity[]>(
+  getWalletMembers(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletMemberEntity>> {
+    return this.get<Page<WalletMemberEntity>>(
       `/wallets/${this.walletId}/members`,
-      undefined,
-      responseResultsMapCallback,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      },
+      responseDataMapCallback,
     );
   }
 
-  getWalletRemovedSpenders(): Observable<WalletRemovedSpenderEntity[]> {
-    return this.get<WalletRemovedSpenderEntity[]>(
+  getWalletRemovedSpenders(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletRemovedSpenderEntity>> {
+    return this.get<Page<WalletRemovedSpenderEntity>>(
       `/wallets/${this.walletId}/removed_spenders`,
-      undefined,
-      responseResultsMapCallback,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      },
+      responseDataMapCallback,
     );
   }
 
-  getWalletPendingTransfers(): Observable<WalletPendingTransferEntity[]> {
-    return this.get<WalletPendingTransferEntity[]>(
+  getWalletPendingTransfers(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletPendingTransferEntity>> {
+    return this.get<Page<WalletPendingTransferEntity>>(
       `/wallets/${this.walletId}/pending_transfers`,
-      undefined,
-      responseResultsMapCallback,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      },
+      responseDataMapCallback,
     );
   }
 
@@ -131,11 +162,25 @@ export class RinoService {
     );
   }
 
-  getWalletSubaddresses(): Observable<WalletSubaddressEntity[]> {
-    return this.get<WalletSubaddressEntity[]>(
+  getWalletSubaddresses(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletSubaddressEntity>> {
+    return this.get<Page<WalletSubaddressEntity>>(
       `/wallets/${this.walletId}/subaddresses`,
-      undefined,
-      responseResultsMapCallback,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      },
+      responseDataMapCallback,
+    );
+  }
+
+  getWalletSubaddress(address: string): Observable<WalletSubaddressEntity> {
+    return this.get<WalletSubaddressEntity>(
+      `/wallets/${this.walletId}/subaddresses/${address}`,
     );
   }
 
@@ -178,11 +223,19 @@ export class RinoService {
     );
   }
 
-  getWalletTransactions(): Observable<WalletTransactionEntity[]> {
-    return this.get<WalletTransactionEntity[]>(
+  getWalletTransactions(
+    limit?: number,
+    offset?: number,
+  ): Observable<Page<WalletTransactionEntity>> {
+    return this.get<Page<WalletTransactionEntity>>(
       `/wallets/${this.walletId}/transactions`,
-      undefined,
-      responseResultsMapCallback,
+      {
+        params: {
+          limit,
+          offset,
+        },
+      },
+      responseDataMapCallback,
     );
   }
 

@@ -2,7 +2,7 @@ import { Expose } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class StatusEntity {
-  @ApiProperty()
+  @ApiProperty({ example: 200 })
   status: number;
 
   constructor(status: number) {
@@ -10,7 +10,7 @@ export class StatusEntity {
   }
 
   @Expose()
-  @ApiProperty()
+  @ApiProperty({ example: "Ok" })
   get message(): string {
     switch (this.status) {
       case 200:

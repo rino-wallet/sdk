@@ -1,5 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger";
 
+class WalletMemberEntityUser {
+  @ApiProperty()
+  email: string;
+
+  @ApiProperty()
+  name: string;
+}
+
+class WalletMemberEntityWallet {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  name: string;
+}
 export class WalletMemberEntity {
   @ApiProperty()
   id: string;
@@ -11,14 +26,8 @@ export class WalletMemberEntity {
   created_at: string;
 
   @ApiProperty()
-  user: {
-    email: string;
-    name: string;
-  };
+  user: WalletMemberEntityUser;
 
   @ApiProperty()
-  wallet: {
-    id: string;
-    name: string;
-  };
+  wallet: WalletMemberEntityWallet;
 }

@@ -32,7 +32,7 @@ const createMockMoneroSubaddresses = (
         unlockedBalance: new Uint8Array(0),
         numUnspentOutputs: 0,
         numBlocksToUnlock: 0,
-        address: walletSubaddressesMock[0].address,
+        address: walletSubaddressesMock.results[0].address,
         label: undefined,
         isUsed: false,
       },

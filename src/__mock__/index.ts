@@ -1,7 +1,6 @@
 export * from "./account.info.mock";
 export * from "./http.service.mock";
 export * from "./monero.service.mock";
-export * from "./response.entity.mock";
 export * from "./rino.service.mock";
 export * from "./task.response.mock";
 export * from "./wallet.mock";

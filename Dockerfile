@@ -1,5 +1,5 @@
 ARG NODE_VERSION="${NODE_VERSION:-16.20.2}"
-FROM node:${NODE_VERSION}-buster-slim AS build-stage
+FROM node:${NODE_VERSION}-bullseye-slim AS build-stage
 
 WORKDIR /app
 COPY . .
@@ -7,7 +7,7 @@ COPY . .
 RUN yarn install --frozen-lockfile \
     && yarn build
 
-FROM node:${NODE_VERSION}-buster-slim AS runtime-stage
+FROM node:${NODE_VERSION}-bullseye-slim AS runtime-stage
 
 ARG USERID=1000
 RUN mkdir -p /app
