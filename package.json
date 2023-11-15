@@ -32,7 +32,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.3.0",
     "@rino-wallet/monero-javascript": "0.0.36",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "class-transformer": "^0.5.1",
     "joi": "^17.9.2",
     "libsodium-wrappers": "^0.7.11",
